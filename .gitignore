@@ -9,3 +9,4 @@ cscope*
 
 # compiled file
 out/*
+*.log
