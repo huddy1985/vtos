@@ -372,7 +372,7 @@ static int adjust_periph_pll(enum periph_id periph_id, int source,
 
 	clrsetbits_le32(reg, OUT_CLK_DIVISOR_MASK,
 			divider << OUT_CLK_DIVISOR_SHIFT);
-    while (delayed--);
+    while (delayed--){}
 	// udelay(1);
 
 	/* work out the source clock and set it */
@@ -382,7 +382,7 @@ static int adjust_periph_pll(enum periph_id periph_id, int source,
 	clock_ll_set_source_bits(periph_id, mux_bits, source);
 
     delayed = 100;
-    while (delayed--);
+    while (delayed--){}
 	// udelay(2);
 	return 0;
 }
@@ -452,7 +452,8 @@ void reset_periph(enum periph_id periph_id, int us_delay)
 	/* Put peripheral into reset */
 	reset_set_enable(periph_id, 1);
 	// udelay(us_delay);
-    while (delayed--);
+	
+    while (delayed--){}
 
 	/* Remove reset */
 	reset_set_enable(periph_id, 0);
@@ -603,7 +604,7 @@ void clock_ll_start_uart(enum periph_id periph_id)
 	clock_ll_set_source(periph_id, 0); /* UARTx_CLK_SRC = 00, PLLP_OUT0 */
 
 	/* wait for 2us */
-    while (delayed--);
+    while (delayed--){}
 	// udelay(2);
 
 	/* De-assert reset to UART */
