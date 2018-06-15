@@ -1,4 +1,4 @@
-#include "tx2uart.h"
+#include <drivers/tx2_uart.h>
 
 int init_uart(void)
 {

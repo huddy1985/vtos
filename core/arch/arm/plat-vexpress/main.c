@@ -214,7 +214,7 @@ static enum itr_return serial_itr_cb(struct itr_handler *h __unused)
     assert(read_cntp_ctl_el0() >> 2 & 1);
     isb();
     write_cntp_ctl_el0(0);
-
+    
     /* init the serial interrupt things */;
     isb();
     DMSG("----- serial interrupt -----\n");

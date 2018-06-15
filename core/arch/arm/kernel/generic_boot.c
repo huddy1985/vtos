@@ -47,6 +47,7 @@
 #include <utee_defines.h>
 #include <util.h>
 #include <stdio.h>
+#include <drivers/tx2_uart.h>
 
 #include <platform_config.h>
 
@@ -609,6 +610,7 @@ static void init_primary_helper(unsigned long pageable_part,
 	//init_fdt(fdt);
 	main_init_gic();
 	init_generic_timer();
+    init_uart();
 	init_vfp_nsec();
 
 	if (init_teecore() != TEE_SUCCESS)

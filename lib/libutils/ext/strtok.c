@@ -82,7 +82,7 @@ size_t strspn (const char *s, const char *accept)
 
 char *strchr (const char *s, int c_in)
 {
-    const unsigned char * __attribute__((aligned(__alignof__(const unsigned long int *)))) char_ptr ;
+    const unsigned char *char_ptr;
     const unsigned long int *longword_ptr;
     unsigned long int longword, magic_bits, charmask;
     unsigned char c;
@@ -91,8 +91,8 @@ char *strchr (const char *s, int c_in)
 
     /* Handle the first few characters by reading one character at a time.
        Do this until CHAR_PTR is aligned on a longword boundary.  */
-    for (char_ptr = (const unsigned char *)s; ((unsigned long int) char_ptr
-                        & (sizeof (longword) - 1)) != 0;
+    for (char_ptr = (const unsigned char *) s;
+         ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0;
          ++char_ptr)
         if (*char_ptr == c)
             return (void *) char_ptr;
@@ -102,8 +102,8 @@ char *strchr (const char *s, int c_in)
     /* All these elucidatory comments refer to 4-byte longwords,
        but the theory applies equally well to 8-byte longwords.  */
 
-    longword_ptr = (const unsigned long int *)char_ptr;
-    
+    longword_ptr = (unsigned long int *) char_ptr;
+
     /* Bits 31, 24, 16, and 8 of this number are zero.  Call these bits
        the "holes."  Note that there is a hole just to the left of
        each byte, with an extra at the end:
@@ -113,18 +113,8 @@ char *strchr (const char *s, int c_in)
 
        The 1-bits make sure that carries propagate to the next 0-bit.
        The 0-bits provide holes for carries to fall into.  */
-    switch (sizeof (longword)) {
-    case 4:
-        magic_bits = 0x7efefeffL;
-        break;
-    case 8:
-        magic_bits = (long int)((0x7efefefeL << 16) << 16) | 0xfefefeffL;
-        break;
-    default:
-        // here should call a abort, but there isn't concrete this func.
-        // abort ();
-        return NULL;
-    }
+    magic_bits = -1;
+    magic_bits = magic_bits / 0xff * 0xfe << 1 >> 1 | 1;
 
     /* Set up a longword, each of whose bytes is C.  */
     charmask = c | (c << 8);
@@ -133,13 +123,13 @@ char *strchr (const char *s, int c_in)
         /* Do the shift in two steps to avoid a warning if long has 32 bits.  */
         charmask |= (charmask << 16) << 16;
     if (sizeof (longword) > 8)
-        return NULL; // should abort ();
-
+        return NULL;
 
     /* Instead of the traditional loop which tests each character,
        we will test a longword at a time.  The tricky part is testing
        if *any of the four* bytes in the longword in question are zero.  */
-    for (;;) {
+    for (;;)
+    {
         /* We tentatively exit the loop if adding MAGIC_BITS to
            LONGWORD fails to change any of the hole bits of LONGWORD.
 
@@ -237,4 +227,4 @@ char *strchr (const char *s, int c_in)
     return NULL;
 }
 
-#endif // __STRTOK_H__char *
+#endif // __STRTOK_H__char */* Find the first occurrence of C in S.  */
